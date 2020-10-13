@@ -1,0 +1,85 @@
+
+
+body{
+   background-color:rgb(212, 191, 191);
+   color: rgba(0, 0, 0, 0.705);
+   
+}
+h1{
+    text-align: right;
+    border: solid black;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background-image: url(https://i.imgur.com/7fsCAAS.gif?noredirect);
+    color:whitesmoke;
+    font-size: xx-large;
+    font-family: cursive;
+    font-weight: 1500px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+#Aboutus{
+   font-family: cursive;
+    border: solid black;
+}
+
+#monster{
+    float: right;
+    width: 600px;
+    padding-right: 150px;
+    padding-top: 240px;
+    animation-fill-mode: backwards;
+}
+
+#family{
+    width: 500px;
+    float: right;
+    padding-right: 100px ;
+    padding-top: 150px;
+
+}
+#fish{
+    float: right;
+    width: 500px;
+    padding-top: 150px;
+    padding-right: 150px;
+}
+
+#cutter{
+    align-items: center;
+    padding-right: 500px;
+    width: 250px;
+    height: 250px;
+    
+}
+#salmon{
+    float: right;
+    width: 300px;
+    padding-right: 200px;
+    padding-top: 10px;
+
+}
+
+a{
+    padding-left: 150px;
+    font-family: cursive;
+
+}
+
+ul{
+    border-collapse: collapse;
+    border:1px solid black
+}
+
+h2{
+    font-family: cursive;
+}
+#div{
+    font-family: cursive;
+}
+h3{
+    font-family: cursive;
+    display: inline;
+}
+#Contactus{
+    text-align: center;
+}
