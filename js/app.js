@@ -35,13 +35,13 @@ function Branch(bName, minCust, maxCust, averageSale,) {
 
 }
 Branch.prototype.fillRandCustomers = function () {
-    for (var i = 0; i < 14; i++) {
-        this.randCustomers.push(getRndInteger(23, 65));
+    for (var i = 0; i < hours.length; i++) {
+        this.randCustomers.push(getRndInteger(this.mincustomers,this.maxcustomers));
     }
 };
 Branch.prototype.fillCookiePerSale = function () {
 
-    for (var k = 0; k <= 13; k++) {
+    for (var k = 0; k < hours.length; k++) {
         var cookiePerHr = Math.floor(this.randCustomers[k] * this.avgSale);
         this.cookiesPerSale.push(cookiePerHr);
         this.totalCookies = this.totalCookies + cookiePerHr;
@@ -78,7 +78,7 @@ console.log(dubai)
 
 console.log(branches)
 
-function buildTable(branchesArray) {
+/*function buildTable(branchesArray) {
     var section1 = document.getElementById('tablesection');
     var table1 = document.createElement('table');
     section1.appendChild(table1);
@@ -88,59 +88,138 @@ function buildTable(branchesArray) {
     table1.appendChild(thead1)
     tr1.appendChild(th1);
     thead1.appendChild(tr1);
-   
+
     for (var i = 0; i < hours.length; i++) {
         var tableheader = document.createElement('th')
         tableheader.textContent = hours[i];
         tr1.appendChild(tableheader);
     }
-    var tbody1=document.createElement('tbody');
+    var tbody1 = document.createElement('tbody');
     table1.appendChild(tbody1);
     var th2 = document.createElement('th');
     th2.textContent = 'Daily Location Total';
-    tr1.appendChild(th2);
+    tr1.appendChild(th2);*/
 
- 
-    for (i = 0; i < branches.length; i++) {
+    Branch.prototype.render = function () {
+        
         var tr2 = document.createElement('tr');
         var td1 = document.createElement('td');
-        td1.textContent = branchesArray[i].branchName;
+        td1.textContent= this.branchName;
         tr2.appendChild(td1);
-        for (var j = 0; j < branchesArray[i].cookiesPerSale.length; j++) {
+        
+        for(var i =0 ; i<this.cookiesPerSale.length; i++){
             var td2 = document.createElement('td');
-            td2.textContent = branchesArray[i].cookiesPerSale[j];
+            td2.textContent = this.cookiesPerSale[i];
             tr2.appendChild(td2);
 
         }
-        var td3 = document.createElement('td');
-        td3.textContent = branchesArray[i].totalCookies;
-        tr2.appendChild(td3);
-        tbody1.appendChild(tr2);
-    }
-    var tr3 = document.createElement('tr');
-    var tr3td1=document.createElement('td');
-    var cookiesSoldByHour= 0;
-    tr3td1.textContent = 'Total cookies per hour';
-    tr3.appendChild(tr3td1);
 
-    var tfoot1 = document.createElement('tfoot');
-    table1.appendChild(tfoot1);
-    var dailyTotal = 0;
-    for(i =0;i<hours.length;i++){
-        var totalCookiesByHour= 0;
-            for (j=0;j<branchesArray.length;j++){
-                totalCookiesByHour = totalCookiesByHour +branchesArray[j].cookiesPerSale[i];
+        var td3 = document.createElement('td');
+        td3.textContent = this.totalCookies;
+        tr2.appendChild(td3);
+        return tr2;  
+        
+    }
+
+    function tableHead() {
+        var thead1 = document.createElement('thead');
+        var tr1 = document.createElement('tr');
+        thead1.appendChild(tr1);
+        var th1 = document.createElement('th');
+        tr1.appendChild(th1);
+
+        for(var i=0 ; i<hours.length;i++){
+            var tableheader = document.createElement('th');
+            tableheader.textContent= hours[i];
+            tr1.appendChild(tableheader);
+
+        }
+        var th2 = document.createElement('th');
+        th2.textContent= 'dailyTotal';
+        tr1.appendChild(th2);
+        return thead1;
+
+    }
+
+    function tablebody(branchArray){ 
+        var tbody = document.createElement('tbody');
+        for(var i = 0 ; i< branchArray.length ; i++){
+            var branchrow = branchArray[i].render();
+            tbody.appendChild(branchrow);
+            
+        }
+        return tbody;
+
+    }
+    
+    function tablefooter(branchArray) {
+        var tr3 = document.createElement('tr');
+        var tr3td1 = document.createElement('td');
+        tr3td1.textContent= 'totalCookies';
+        tr3.appendChild(tr3td1);
+        var tfoot = document.createElement('tfoot');
+        var dailyTotal = 0;
+        for(var i = 0 ; i < hours.length;i++){
+            var totalCookies = 0;
+            for(var k=0;k<branchArray.length;k++){
+                totalCookies= totalCookies + branchArray[k].cookiesPerSale[i];
             }
             var tr3td2 = document.createElement('td');
-            tr3td2.textContent = totalCookiesByHour;
+            tr3td2.textContent= totalCookies;
             tr3.appendChild(tr3td2);
-            dailyTotal = dailyTotal + totalCookiesByHour;
-            }
-        var tr3td3 = document.createElement('td');
-        tr3td3.textContent = dailyTotal;
-        tr3.appendChild(tr3td3);
-            
-        tfoot1.appendChild(tr3);
+            dailyTotal = dailyTotal + totalCookies;
+         }
+            var tr3td3= document.createElement('td');
+            tr3td3.textContent='dailytotal';
+            tr3.appendChild(tr3td3);
+            tfoot.appendChild(tr3);
+            return tfoot;
     }
+        function buildtable(branchArray) {
+            var section1 = document.getElementById('tablesection');
+            var table1 = document.createElement('table');
+            section1.innerHTML=' ';
+            section1.appendChild(table1);
+            table1.appendChild(tableHead());
+            table1.appendChild(tablebody(branchArray));
+            table1.appendChild(tablefooter(branchArray));
+    
+            
+        }
+        buildtable(branches);
 
-buildTable(branches);
+var myForm = document.getElementById('cookies');
+console.log(myForm)
+
+
+myForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    var location = event.target.location.value;
+    var minCustomer = parseInt(event.target.minCustomer.value);
+    var maxCustomer = parseInt(event.target.maxCustomer.value);
+    var avgSales = parseFloat(event.target.avgSales.value)
+
+   
+    var location1 = new Branch(location,minCustomer, maxCustomer, avgSales);
+    console.log(location1);
+    location1.fillRandCustomers();
+    location1.fillCookiePerSale();
+
+    buildtable(branches);
+
+})
+    //console.log(location1);
+    //branches.push(location1);
+     //myForm.reset();
+
+/* myForm.addEventListener("submit"), function (event) {
+    document.event.preventDefault();
+    var city = event.target.location.value;
+    var minCustomer = parseInt(event.target.minCustomer.value);
+    var maxCustomer = parseInt(event.target.maxCustomer.value);
+    var avgSales = parseFloat(event.target.avgSales.value);
+    console.log(typeof(minCustomer));
+    console.log(typeof(avgSales));
+    console.log(submit);
+    event.preventDefault();
+}*/
